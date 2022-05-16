@@ -11,6 +11,8 @@ Create inventory (enter name):
   <input type="text" name="name">
   <input type="submit">
 </form>
+
+<br>
   
 Delete inventory (enter ID):
 <form id="delete_inventory">
@@ -18,6 +20,8 @@ Delete inventory (enter ID):
   <input type="text" name="id">
   <input type="submit">
 </form>
+
+<br>
 
 Edit inventory (enter ID and new name):
 <form id="edit_inventory">
@@ -28,8 +32,12 @@ Edit inventory (enter ID and new name):
   <input type="submit">
 </form>
 
+<br>
+  
 <button id="view_inventory">View inventory</button>
 <div id="inventory"></div>
+
+<br>
   
 Create warehouse (enter name):
 <form id="create_warehouse">
@@ -38,8 +46,12 @@ Create warehouse (enter name):
   <input type="submit">
 </form>
 
+<br>
+  
 <button id="view_warehouses">View warehouses</button>
 <div id="warehouses"></div>
+
+<br>
 
 Assign inventory to warehouse (enter ID and new name):
 <form id="assign_inventory">
@@ -52,6 +64,8 @@ Assign inventory to warehouse (enter ID and new name):
   <input type="submit">
 </form>
 
+<br>
+
 View warehouses for inventory (enter ID):
 <form id="warehouses_inventory">
   <label for="id">Inventory ID:</label>
@@ -60,6 +74,16 @@ View warehouses for inventory (enter ID):
 </form>
 <div id="warehouses_for_inventory"></div>
 
+<br>
+
+View inventory for warehouse (enter ID):
+<form id="inventory_warehouse">
+  <label for="id">Warehouse ID:</label>
+  <input type="text" name="id">
+  <input type="submit">
+</form>
+<div id="inventory_for_warehouse"></div>
+  
 </body>
 
 <script type="text/javascript" src="{{

@@ -178,7 +178,7 @@ async function assign_to_warehouse(e) {
   const data = {
     inventory_id: form.querySelector('input[name="inventory_id"]').value,
     warehouse_id: form.querySelector('input[name="warehouse_id"]').value,
-    count: form.querySelector('input[name="count"]').value,
+    number: form.querySelector('input[name="count"]').value,
   };
 
   const response = await fetch(`${SERVER}/inventory/assign_to_warehouse`, {
@@ -197,3 +197,22 @@ async function assign_to_warehouse(e) {
 }
   
 document.querySelector("#assign_inventory").onsubmit = assign_to_warehouse; 
+
+async function view_inventory_for_warehouse(e) {
+  e.preventDefault();
+  const form = document.querySelector("#inventory_warehouse");
+  const id = form.querySelector('input[name="id"]').value;
+  
+  const response = await fetch(`${SERVER}/warehouse/${id}/inventory`, {
+    method: 'GET',
+  });
+
+  if (!response.ok) {
+    alert("Cannot view warehouse for inventory!");
+  }
+
+  const json = await response.json();
+  document.querySelector("#inventory_for_warehouse").innerHTML = JSON.stringify(json, null, 4);
+}
+
+document.querySelector("#inventory_warehouse").onsubmit = view_inventory_for_warehouse;

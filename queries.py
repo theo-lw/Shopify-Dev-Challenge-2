@@ -32,3 +32,10 @@ FROM warehouse_inventory INNER JOIN warehouse
 ON warehouse_inventory.warehouse_id = warehouse.id
 WHERE warehouse_inventory.inventory_id = ?
 """
+
+GET_INVENTORY_IN_WAREHOUSE = """
+SELECT inventory.id, inventory.name, warehouse_inventory.number
+FROM warehouse_inventory INNER JOIN inventory
+ON warehouse_inventory.inventory_id = inventory.id
+WHERE warehouse_inventory.warehouse_id = ?
+"""
