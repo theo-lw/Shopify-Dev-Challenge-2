@@ -1,6 +1,6 @@
 from dataclasses import field
 from marshmallow_dataclass import dataclass
-from marshmallow.validate import Length
+from marshmallow.validate import Length, Range
 
 @dataclass
 class InventoryItem:
@@ -39,7 +39,7 @@ class WarehouseInventory:
 class AssignToWarehouseRequest:
   inventory_id: int
   warehouse_id: int
-  number: int
+  number: int = field(metadata={"validate": Range(min=0)})
 
 @dataclass
 class InventoryForWarehouse:
