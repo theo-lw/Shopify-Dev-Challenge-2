@@ -1,0 +1,67 @@
+<!doctype html>
+<head>
+  <title>Shopify Dev Challenge Fall 2022</title>
+</head>
+
+<body>
+
+Create inventory (enter name):
+<form id="create_inventory">
+  <label for="name">Name:</label>
+  <input type="text" name="name">
+  <input type="submit">
+</form>
+  
+Delete inventory (enter ID):
+<form id="delete_inventory">
+  <label for="id">ID:</label>
+  <input type="text" name="id">
+  <input type="submit">
+</form>
+
+Edit inventory (enter ID and new name):
+<form id="edit_inventory">
+  <label for="id">ID:</label>
+  <input type="text" name="id">
+  <label for="name">Name:</label>
+  <input type="text" name="name">
+  <input type="submit">
+</form>
+
+<button id="view_inventory">View inventory</button>
+<div id="inventory"></div>
+  
+Create warehouse (enter name):
+<form id="create_warehouse">
+  <label for="name">Name:</label>
+  <input type="text" name="name">
+  <input type="submit">
+</form>
+
+<button id="view_warehouses">View warehouses</button>
+<div id="warehouses"></div>
+
+Assign inventory to warehouse (enter ID and new name):
+<form id="assign_inventory">
+  <label for="inventory_id">Inventory ID:</label>
+  <input type="text" name="inventory_id">
+  <label for="warehouse_id">Warehouse ID:</label>
+  <input type="text" name="warehouse_id">
+  <label for="count">Number of items to add to warehouse:</label>
+  <input type="text" name="count">
+  <input type="submit">
+</form>
+
+View warehouses for inventory (enter ID):
+<form id="warehouses_inventory">
+  <label for="id">Inventory ID:</label>
+  <input type="text" name="id">
+  <input type="submit">
+</form>
+<div id="warehouses_for_inventory"></div>
+
+</body>
+
+<script type="text/javascript" src="{{
+  url_for('static', filename='index.js') }}"></script>
+</html>
