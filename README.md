@@ -2,7 +2,7 @@
 
 ### Replit link
 
-https://replit.com/join/jbkaioscru-theo-lw
+https://replit.com/@theo-lw/Shopify-Dev-Challenge-1
 
 ### Files
 
