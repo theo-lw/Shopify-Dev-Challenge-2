@@ -46,10 +46,13 @@ def create_inventory():
     create_request = InventoryCreateRequest.Schema().load(input_json)
   except ValidationError as e:
     return str(e), 400
-    
-  cur = get_db().cursor()
-  cur.execute(CREATE_INVENTORY, (create_request.name, create_request.city_id))
-  get_db().commit()
+
+  try:
+    cur = get_db().cursor()
+    cur.execute(CREATE_INVENTORY, (create_request.name, create_request.city_id))
+    get_db().commit()
+  except sqlite3.Error:
+    return "Could not create inventory (check that the city ID exists)", 400
   
   if cur.rowcount == 0:
     return "No rows created", 400
@@ -63,10 +66,13 @@ def delete_inventory():
     delete_request = InventoryDeleteRequest.Schema().load(input_json)
   except ValidationError as e:
     return str(e), 400
-    
-  cur = get_db().cursor()
-  cur.execute(DELETE_INVENTORY, (delete_request.id,))
-  get_db().commit()
+
+  try:
+    cur = get_db().cursor()
+    cur.execute(DELETE_INVENTORY, (delete_request.id,))
+    get_db().commit()
+  except sqlite3.Error:
+    return "Could not delete inventory (check that the inventory ID exists)", 400
 
   if cur.rowcount == 0:
     return "No rows deleted, no inventory with this ID exists", 400
@@ -80,10 +86,13 @@ def update_inventory():
     edit_request = InventoryUpdateRequest.Schema().load(input_json)
   except ValidationError as e:
     return str(e), 400
-  
-  cur = get_db().cursor()
-  cur.execute(UPDATE_INVENTORY, (edit_request.name, edit_request.city_id, edit_request.id))
-  get_db().commit()
+
+  try:
+    cur = get_db().cursor()
+    cur.execute(UPDATE_INVENTORY, (edit_request.name, edit_request.city_id, edit_request.id))
+    get_db().commit()
+  except sqlite3.Error:
+    return "Could not update inventory (check that the city ID & inventory ID exist)", 400
 
   if cur.rowcount == 0:
     return "No rows updated, no inventory with this ID exists", 400
@@ -97,10 +106,13 @@ def create_warehouse():
     create_request = CityCreateRequest.Schema().load(input_json)
   except ValidationError as e:
     return str(e), 400
-  
-  cur = get_db().cursor()
-  cur.execute(CREATE_CITY, (create_request.name, create_request.longitude, create_request.latitude))
-  get_db().commit()
+
+  try:
+    cur = get_db().cursor()
+    cur.execute(CREATE_CITY, (create_request.name, create_request.longitude, create_request.latitude))
+    get_db().commit()
+  except sqlite3.Error:
+    return "Could not create city (check that a city at the longitude/latitude doesn't already exist)", 400
 
   if cur.rowcount == 0:
     return "No rows created, city with longitude/latitude already exists", 400
