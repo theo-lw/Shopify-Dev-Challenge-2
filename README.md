@@ -4,7 +4,11 @@
 
 https://replit.com/@theo-lw/Shopify-Dev-Challenge-2
 
+### Extra feature
+
 The extra feature is that any city in the world can be used as a storage location, so  long as it is created via the `city/create` endpoint.
+
+We assume that cities have distinct longitudes and latitudes, although their names may not be unique.
 
 ### Files
 

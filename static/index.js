@@ -19,7 +19,7 @@ async function submit_inventory(e) {
   if (response.ok) {
     alert("Inventory created successfully");
   } else {
-    alert(`Inventory failed to be created: ${response.text}`);
+    alert(`Inventory failed to be created: ${await response.text()}`);
   }
 }
   
@@ -32,7 +32,7 @@ async function view_inventory(e) {
   });
 
   if (!response.ok) {
-    alert(`Cannot view inventory! ${response.text}`);
+    alert(`Cannot view inventory! ${await response.text()}`);
   }
 
   const json = await response.json();
@@ -59,7 +59,7 @@ async function remove_inventory(e) {
   if (response.ok) {
     alert("Inventory deleted successfully");
   } else {
-    alert(`Inventory failed to be deleted : ${response.text}`);
+    alert(`Inventory failed to be deleted : ${await response.text()}`);
   }
 }
   
@@ -85,7 +85,7 @@ async function change_inventory(e) {
   if (response.ok) {
     alert("Inventory edited successfully");
   } else {
-    alert(`Inventory failed to be edited: : ${response.text}`);
+    alert(`Inventory failed to be edited: : ${await response.text()}`);
   }
 }
   
@@ -111,7 +111,7 @@ async function submit_city(e) {
   if (response.ok) {
     alert("City created successfully");
   } else {
-    alert(`City failed to be created: : ${response.text}`);
+    alert(`City failed to be created: : ${await response.text()}`);
   }
 }
   
@@ -124,7 +124,7 @@ async function view_city(e) {
   });
 
   if (!response.ok) {
-    alert(`Cannot view cities! ${response.text}`);
+    alert(`Cannot view cities! ${await response.text()}`);
   }
 
   const json = await response.json();

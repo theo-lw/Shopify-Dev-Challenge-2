@@ -50,6 +50,10 @@ def create_inventory():
   cur = get_db().cursor()
   cur.execute(CREATE_INVENTORY, (create_request.name, create_request.city_id))
   get_db().commit()
+  
+  if cur.rowcount == 0:
+    return "No rows created", 400
+  
   return "", 200
 
 @app.route('/inventory/delete', methods = ['DELETE'])
@@ -63,6 +67,10 @@ def delete_inventory():
   cur = get_db().cursor()
   cur.execute(DELETE_INVENTORY, (delete_request.id,))
   get_db().commit()
+
+  if cur.rowcount == 0:
+    return "No rows deleted, no inventory with this ID exists", 400
+    
   return "", 200
 
 @app.route('/inventory/edit', methods = ['PUT'])
@@ -76,6 +84,10 @@ def update_inventory():
   cur = get_db().cursor()
   cur.execute(UPDATE_INVENTORY, (edit_request.name, edit_request.city_id, edit_request.id))
   get_db().commit()
+
+  if cur.rowcount == 0:
+    return "No rows updated, no inventory with this ID exists", 400
+  
   return "", 200
 
 @app.route('/city/create', methods = ['POST'])
@@ -89,6 +101,10 @@ def create_warehouse():
   cur = get_db().cursor()
   cur.execute(CREATE_CITY, (create_request.name, create_request.longitude, create_request.latitude))
   get_db().commit()
+
+  if cur.rowcount == 0:
+    return "No rows created, city with longitude/latitude already exists", 400
+  
   return "", 200
 
 @app.route('/city/all', methods = ['GET'])
