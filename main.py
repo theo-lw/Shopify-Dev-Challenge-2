@@ -34,7 +34,8 @@ def init_db():
 @app.route('/inventory/all')
 def list_inventory():
   cur = get_db().cursor()
-  result = [InventoryItem(*row) for row in cur.execute(FIND_INVENTORY)]
+  city_creator = CityCreator()
+  result = [InventoryItem(row[0], row[1], city_creator.create_city(*row[2:])) for row in cur.execute(FIND_INVENTORY)]
 
   return jsonify(InventoryItem.Schema(many=True).dump(result))
 
@@ -43,11 +44,11 @@ def create_inventory():
   try:
     input_json = request.get_json(force=True)
     create_request = InventoryCreateRequest.Schema().load(input_json)
-  except ValidationError:
-    return "Ill-formed request", 400
+  except ValidationError as e:
+    return str(e), 400
     
   cur = get_db().cursor()
-  cur.execute(CREATE_INVENTORY, (create_request.name,))
+  cur.execute(CREATE_INVENTORY, (create_request.name, create_request.city_id))
   get_db().commit()
   return "", 200
 
@@ -56,9 +57,8 @@ def delete_inventory():
   try:
     input_json = request.get_json(force=True)
     delete_request = InventoryDeleteRequest.Schema().load(input_json)
-  except ValidationError:
-    return "Ill-formed request", 400
-  
+  except ValidationError as e:
+    return str(e), 400
     
   cur = get_db().cursor()
   cur.execute(DELETE_INVENTORY, (delete_request.id,))
@@ -70,64 +70,35 @@ def update_inventory():
   try:
     input_json = request.get_json(force=True)
     edit_request = InventoryUpdateRequest.Schema().load(input_json)
-  except ValidationError:
-    return "Ill-formed request", 400
+  except ValidationError as e:
+    return str(e), 400
   
   cur = get_db().cursor()
-  cur.execute(UPDATE_INVENTORY, (edit_request.name, edit_request.id))
+  cur.execute(UPDATE_INVENTORY, (edit_request.name, edit_request.city_id, edit_request.id))
   get_db().commit()
   return "", 200
 
-@app.route('/warehouse/create', methods = ['POST'])
+@app.route('/city/create', methods = ['POST'])
 def create_warehouse():
   try:
     input_json = request.get_json(force=True)
-    create_request = WarehouseCreateRequest.Schema().load(input_json)
-  except ValidationError:
-    return "Ill-fomred request", 400
+    create_request = CityCreateRequest.Schema().load(input_json)
+  except ValidationError as e:
+    return str(e), 400
   
   cur = get_db().cursor()
-  cur.execute(CREATE_WAREHOUSE, (create_request.name,))
+  cur.execute(CREATE_CITY, (create_request.name, create_request.longitude, create_request.latitude))
   get_db().commit()
   return "", 200
 
-@app.route('/warehouse/all', methods = ['GET'])
+@app.route('/city/all', methods = ['GET'])
 def view_warehouses():
   cur = get_db().cursor()
-  result = [Warehouse(*row) for row in cur.execute(FIND_WAREHOUSE)]
+  city_creator = CityCreator()
+  result = [city_creator.create_city(*row) for row in cur.execute(FIND_CITY)]
 
-  return jsonify(Warehouse.Schema(many=True).dump(result))
-
-@app.route('/warehouse/<int:warehouse_id>/inventory', methods=['GET'])
-def view_inventory_for_warehouse(warehouse_id):
-  cur = get_db().cursor()
-  result = [InventoryForWarehouse(*row) for row in cur.execute(GET_INVENTORY_IN_WAREHOUSE, (warehouse_id,))]
-
-  return jsonify(InventoryForWarehouse.Schema(many=True).dump(result))
-
-@app.route('/inventory/<int:inventory_id>/warehouse', methods = ['GET'])
-def view_warehouses_for_inventory(inventory_id):  
-  cur = get_db().cursor()
-  result = [WarehouseInventory(*row) for row in cur.execute(GET_WAREHOUSE_INFO, (inventory_id,))]
-    
-  return jsonify(WarehouseInventory.Schema(many=True).dump(result))
-
-@app.route('/inventory/assign_to_warehouse', methods = ['POST'])
-def assign_inventory_to_warehouse():
-  try:
-    input_json = request.get_json(force=True)
-    assign_request = AssignToWarehouseRequest.Schema().load(input_json)
-  except ValidationError:
-    return "Ill-formed request", 400
+  return jsonify(City.Schema(many=True).dump(result))
   
-  cur = get_db().cursor()
-  cur.execute(ASSIGN_TO_WAREHOUSE, 
-              (assign_request.inventory_id, 
-               assign_request.warehouse_id, 
-               assign_request.number))
-  get_db().commit()
-  return "", 200
-
 @app.route('/')
 def index():
   return render_template('index.html')

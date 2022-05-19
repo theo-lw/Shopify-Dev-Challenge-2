@@ -1,10 +1,11 @@
-SERVER = "https://Shopify-Dev-Challenge-1.theo-lw.repl.co"
+SERVER = "https://Shopify-Dev-Challenge-2.theo-lw.repl.co"
   
 async function submit_inventory(e) {
   e.preventDefault();
   const form = document.querySelector("#create_inventory");
   const data = {
-    name: form.querySelector('input[name="name"]').value
+    name: form.querySelector('input[name="name"]').value,
+    city_id: form.querySelector('input[name="city_id"]').value,
   };
 
   const response = await fetch(`${SERVER}/inventory/create`, {
@@ -18,7 +19,7 @@ async function submit_inventory(e) {
   if (response.ok) {
     alert("Inventory created successfully");
   } else {
-    alert("Inventory failed to be created");
+    alert(`Inventory failed to be created: ${response.text}`);
   }
 }
   
@@ -31,11 +32,11 @@ async function view_inventory(e) {
   });
 
   if (!response.ok) {
-    alert("Cannot view inventory!");
+    alert(`Cannot view inventory! ${response.text}`);
   }
 
   const json = await response.json();
-  document.querySelector("#inventory").innerHTML = JSON.stringify(json, null, 4);
+  document.querySelector("#inventory").innerHTML = "<pre>" +  JSON.stringify(json, null, '\t') + "</pre>";
 }
 
 document.querySelector("#view_inventory").onclick = view_inventory;
@@ -58,35 +59,11 @@ async function remove_inventory(e) {
   if (response.ok) {
     alert("Inventory deleted successfully");
   } else {
-    alert("Inventory failed to be deleted");
+    alert(`Inventory failed to be deleted : ${response.text}`);
   }
 }
   
 document.querySelector("#delete_inventory").onsubmit = remove_inventory; 
-
-async function remove_inventory(e) {
-  e.preventDefault();
-  const form = document.querySelector("#delete_inventory");
-  const data = {
-    id: form.querySelector('input[name="id"]').value
-  };
-
-  const response = await fetch(`${SERVER}/inventory/delete`, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (response.ok) {
-    alert("Inventory deleted successfully");
-  } else {
-    alert("Inventory failed to be deleted");
-  }
-}
-  
-document.querySelector("#delete_inventory").onsubmit = remove_inventory;  
 
 async function change_inventory(e) {
   e.preventDefault();
@@ -94,6 +71,7 @@ async function change_inventory(e) {
   const data = {
     id: form.querySelector('input[name="id"]').value,
     name: form.querySelector('input[name="name"]').value,
+    city_id: form.querySelector('input[name="city_id"]').value,
   };
 
   const response = await fetch(`${SERVER}/inventory/edit`, {
@@ -107,20 +85,22 @@ async function change_inventory(e) {
   if (response.ok) {
     alert("Inventory edited successfully");
   } else {
-    alert("Inventory failed to be edited");
+    alert(`Inventory failed to be edited: : ${response.text}`);
   }
 }
   
 document.querySelector("#edit_inventory").onsubmit = change_inventory; 
 
-async function submit_warehouse(e) {
+async function submit_city(e) {
   e.preventDefault();
-  const form = document.querySelector("#create_warehouse");
+  const form = document.querySelector("#create_city");
   const data = {
-    name: form.querySelector('input[name="name"]').value
+    name: form.querySelector('input[name="name"]').value,
+    longitude: form.querySelector('input[name="longitude"]').value,
+    latitude: form.querySelector('input[name="latitude"]').value,
   };
 
-  const response = await fetch(`${SERVER}/warehouse/create`, {
+  const response = await fetch(`${SERVER}/city/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -129,90 +109,26 @@ async function submit_warehouse(e) {
   });
 
   if (response.ok) {
-    alert("Warehouse created successfully");
+    alert("City created successfully");
   } else {
-    alert("Warehouse failed to be created");
+    alert(`City failed to be created: : ${response.text}`);
   }
 }
   
-document.querySelector("#create_warehouse").onsubmit = submit_warehouse; 
+document.querySelector("#create_city").onsubmit = submit_city; 
 
-async function view_warehouse(e) {
+async function view_city(e) {
   e.preventDefault();
-  const response = await fetch(`${SERVER}/warehouse/all`, {
+  const response = await fetch(`${SERVER}/city/all`, {
     method: 'GET'
   });
 
   if (!response.ok) {
-    alert("Cannot view warehouses!");
+    alert(`Cannot view cities! ${response.text}`);
   }
 
   const json = await response.json();
-  document.querySelector("#warehouses").innerHTML = JSON.stringify(json, null, 4);
+  document.querySelector("#cities").innerHTML = "<pre>" + JSON.stringify(json, null, '\t') + "</pre>";
 }
 
-document.querySelector("#view_warehouses").onclick = view_warehouse;
-
-async function view_warehouse_for_inventory(e) {
-  e.preventDefault();
-  const form = document.querySelector("#warehouses_inventory");
-  const id = form.querySelector('input[name="id"]').value;
-  
-  const response = await fetch(`${SERVER}/inventory/${id}/warehouse`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    alert("Cannot view warehouse for inventory!");
-  }
-
-  const json = await response.json();
-  document.querySelector("#warehouses_for_inventory").innerHTML = JSON.stringify(json, null, 4);
-}
-
-document.querySelector("#warehouses_inventory").onsubmit = view_warehouse_for_inventory;
-
-async function assign_to_warehouse(e) {
-  e.preventDefault();
-  const form = document.querySelector("#assign_inventory");
-  const data = {
-    inventory_id: form.querySelector('input[name="inventory_id"]').value,
-    warehouse_id: form.querySelector('input[name="warehouse_id"]').value,
-    number: form.querySelector('input[name="count"]').value,
-  };
-
-  const response = await fetch(`${SERVER}/inventory/assign_to_warehouse`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
-  });
-
-  if (response.ok) {
-    alert("Inventory assigned to warehouse successfully");
-  } else {
-    alert("Inventory failed to be assigned to warehouse");
-  }
-}
-  
-document.querySelector("#assign_inventory").onsubmit = assign_to_warehouse; 
-
-async function view_inventory_for_warehouse(e) {
-  e.preventDefault();
-  const form = document.querySelector("#inventory_warehouse");
-  const id = form.querySelector('input[name="id"]').value;
-  
-  const response = await fetch(`${SERVER}/warehouse/${id}/inventory`, {
-    method: 'GET',
-  });
-
-  if (!response.ok) {
-    alert("Cannot view warehouse for inventory!");
-  }
-
-  const json = await response.json();
-  document.querySelector("#inventory_for_warehouse").innerHTML = JSON.stringify(json, null, 4);
-}
-
-document.querySelector("#inventory_warehouse").onsubmit = view_inventory_for_warehouse;
+document.querySelector("#view_cities").onclick = view_city;

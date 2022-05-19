@@ -1,6 +1,6 @@
 <!doctype html>
 <head>
-  <title>Shopify Dev Challenge Fall 2022</title>
+  <title>Shopify Dev Challenge Fall 2022, Production Engineering</title>
 </head>
 
 <body>
@@ -9,6 +9,8 @@ Create inventory (enter name):
 <form id="create_inventory">
   <label for="name">Name:</label>
   <input type="text" name="name">
+  <label for="city_id">City ID:</label>
+  <input type="text" name="city_id">
   <input type="submit">
 </form>
 
@@ -29,6 +31,8 @@ Edit inventory (enter ID and new name):
   <input type="text" name="id">
   <label for="name">Name:</label>
   <input type="text" name="name">
+  <label for="city_id">City ID:</label>
+  <input type="text" name="city_id">
   <input type="submit">
 </form>
 
@@ -39,51 +43,22 @@ Edit inventory (enter ID and new name):
 
 <br>
   
-Create warehouse (enter name):
-<form id="create_warehouse">
+Create city (enter name, longitude, and latitude):
+<form id="create_city">
   <label for="name">Name:</label>
   <input type="text" name="name">
+  <label for="name">Longitude:</label>
+  <input type="text" name="longitude">
+  <label for="name">Latitude:</label>
+  <input type="text" name="latitude">
   <input type="submit">
 </form>
 
 <br>
   
-<button id="view_warehouses">View warehouses</button>
-<div id="warehouses"></div>
+<button id="view_cities">View cities</button>
+<div id="cities"></div>
 
-<br>
-
-Assign inventory to warehouse (enter ID and new name):
-<form id="assign_inventory">
-  <label for="inventory_id">Inventory ID:</label>
-  <input type="text" name="inventory_id">
-  <label for="warehouse_id">Warehouse ID:</label>
-  <input type="text" name="warehouse_id">
-  <label for="count">Number of items to add to warehouse:</label>
-  <input type="text" name="count">
-  <input type="submit">
-</form>
-
-<br>
-
-View warehouses for inventory (enter ID):
-<form id="warehouses_inventory">
-  <label for="id">Inventory ID:</label>
-  <input type="text" name="id">
-  <input type="submit">
-</form>
-<div id="warehouses_for_inventory"></div>
-
-<br>
-
-View inventory for warehouse (enter ID):
-<form id="inventory_warehouse">
-  <label for="id">Warehouse ID:</label>
-  <input type="text" name="id">
-  <input type="submit">
-</form>
-<div id="inventory_for_warehouse"></div>
-  
 </body>
 
 <script type="text/javascript" src="{{
